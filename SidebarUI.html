@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 15px;
+      background: #f8f9fa;
+    }
+    .campo {
+      margin-bottom: 15px;
+      position: relative;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    .icone-selecao {
+      position: absolute;
+      right: 8px;
+      top: 35px;
+      cursor: pointer;
+      font-size: 16px;
+      color: #1a73e8;
+    }
+    #status {
+      margin-top: 20px;
+      padding: 10px;
+      background: #e9ecef;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    button#criarEventosBtn {
+      width: 100%;
+      padding: 12px;
+      background: #1a73e8;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .opcional {
+      color: #666;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <h3>📅 Criador de Eventos</h3>
+
+  <div class="campo">
+    <label>Calendário:</label>
+    <select id="calendario"></select>
+  </div>
+
+  <div class="campo">
+    <label>Títulos dos Eventos:</label>
+    <input type="text" id="titulos" placeholder="Ex: A2:A10">
+    <span class="icone-selecao" onclick="selecionar('titulos')">📅</span>
+  </div>
+
+  <div class="campo">
+    <label>Descrição <span class="opcional">(opcional)</span>:</label>
+    <input type="text" id="descricao" placeholder="Ex: B2:B10">
+    <span class="icone-selecao" onclick="selecionar('descricao')">📅</span>
+  </div>
+
+  <div class="campo">
+    <label>Datas:</label>
+    <input type="text" id="datas" placeholder="Ex: C2:C10">
+    <span class="icone-selecao" onclick="selecionar('datas')">📅</span>
+  </div>
+
+  <div class="campo">
+    <label>Horário Início:</label>
+    <input type="text" id="inicio" placeholder="Ex: D2:D10">
+    <span class="icone-selecao" onclick="selecionar('inicio')">📅</span>
+  </div>
+
+  <div class="campo">
+    <label>Horário Fim <span class="opcional">(opcional)</span>:</label>
+    <input type="text" id="fim" placeholder="Ex: E2:E10">
+    <span class="icone-selecao" onclick="selecionar('fim')">📅</span>
+  </div>
+
+  <div class="campo">
+    <label>Notificações <span class="opcional">(opcional)</span>:</label>
+    <input type="text" id="notificacoes" placeholder="Ex: F2:F10">
+    <span class="icone-selecao" onclick="selecionar('notificacoes')">📅</span>
+  </div>
+
+  <button id="criarEventosBtn" onclick="criarEventos()">CRIAR EVENTOS</button>
+  <div id="status"></div>
+
+  <script>
+    // Carregar calendários
+    google.script.run.withSuccessHandler(function(calendarios) {
+      const select = document.getElementById('calendario');
+      select.innerHTML = calendarios.map(c => `<option>${c}</option>`).join('');
+    }).getCalendarios();
+
+    // Selecionar intervalo
+    function selecionar(campo) {
+      google.script.run.withSuccessHandler(function(notacao) {
+        document.getElementById(campo).value = notacao;
+      }).getSelecaoAtual();
+    }
+
+    // Criar eventos
+    function criarEventos() {
+      const config = {
+        calendario: document.getElementById('calendario').value,
+        titulos: document.getElementById('titulos').value.trim(),
+        descricao: document.getElementById('descricao').value.trim() || null,
+        datas: document.getElementById('datas').value.trim(),
+        inicio: document.getElementById('inicio').value.trim(),
+        fim: document.getElementById('fim').value.trim() || null,
+        notificacoes: document.getElementById('notificacoes').value.trim() || null
+      };
+
+      // Validação
+      if (!config.titulos || !config.datas || !config.inicio) {
+        document.getElementById('status').innerHTML = 
+          '<span style="color:red">Preencha os campos obrigatórios</span>';
+        return;
+      }
+
+      document.getElementById('status').innerHTML = '⏳ Processando...';
+      document.getElementById('criarEventosBtn').disabled = true;
+
+      google.script.run.withSuccessHandler(function(resultado) {
+        let html = '';
+        if (resultado.sucesso) {
+          html = `<b>✅ ${resultado.criados}/${resultado.total} eventos criados!</b><br>`;
+          html += resultado.resultados.join('<br>');
+        } else {
+          html = `<span style="color:red">❌ ${resultado.error}</span>`;
+        }
+        document.getElementById('status').innerHTML = html;
+        document.getElementById('criarEventosBtn').disabled = false;
+      }).withFailureHandler(function(erro) {
+        document.getElementById('status').innerHTML = 
+          `<span style="color:red">❌ Erro: ${erro.message}</span>`;
+        document.getElementById('criarEventosBtn').disabled = false;
+      }).criarEventos(config);
+    }
+  </script>
+</body>
+</html>
