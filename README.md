@@ -1,14 +1,15 @@
-# Scripts-Google
-+1 Scripts para Google Planilhas <br>
-<strong> PT: </strong> Esse script cria vários eventos do google planilhas para o google calendar automatizando suas tarefas.
-
+# Google Sheets to Google Calendar
 <span align="center">
-
-##  Acelere sua produtividade! 👋 
-
+Scripts-Google
++1 Scripts para Google Planilhas <br>
+Acelere sua produtividade! 👋 <br>
+Google Planilhas para Google Agenda
 </span>
-
-ID do Scipt: 1o16MnARvQ84VzWN_QNbKtIE_B8nfAn5di1DCN23HQW9n-tuIOCd56u6Z
+<br>
+<br>
+<strong> PT: </strong> Esse script cria vários eventos do google planilhas para o google calendar automatizando suas tarefas.
+<br>
+<strong><h3>ID do Script: 1o16MnARvQ84VzWN_QNbKtIE_B8nfAn5di1DCN23HQW9n-tuIOCd56u6Z</strong></h3>
 
 <div align="center">
   <h2>Modelo de banco de dados!!!</h2>
@@ -17,5 +18,11 @@ ID do Scipt: 1o16MnARvQ84VzWN_QNbKtIE_B8nfAn5di1DCN23HQW9n-tuIOCd56u6Z
 <div align="center">
 
 </div>
+<strong> EN: </strong> This script creates multiple events from Google Sheets to Google Calendar automating your tasks.
+<br>
+<strong><h3>Script Code: 1o16MnARvQ84VzWN_QNbKtIE_B8nfAn5di1DCN23HQW9n-tuIOCd56u6Z</strong></h3>
 
-Autor: Victor Gandara Bettoni
+<div align="center">
+  <h2>Modelo de banco de dados!!!</h2>
+
+Creator: Victor Gandara Bettoni
